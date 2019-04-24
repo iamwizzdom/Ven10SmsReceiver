@@ -80,6 +80,8 @@ public class SmsListener extends BroadcastReceiver {
         }
     }
 
+
+
     private String[] splitMessage(String message) {
 
         if (message == null) return new String[0];
@@ -96,7 +98,7 @@ public class SmsListener extends BroadcastReceiver {
         while (m.find()) {
             String line = m.group(0);
             if (line.isEmpty()) continue;
-            strings[i++] = line;
+            strings[i++] = line.trim();
         }
 
         return strings;
@@ -122,25 +124,45 @@ public class SmsListener extends BroadcastReceiver {
 
         lineOne = lineOne.substring(3, lineOne.length());
 
-        String[] lineOneArray = lineOne.split(":", 2);
+        String datePattern = "[0-9]{1,2}(/|-)[0-9]{1,2}(/|-)[0-9]{4}",
+                timePattern = "[0-9]{1,2}(:|/)[0-9]{1,2}\\s[a-zA-Z]{2}",
+                dimensionPattern = "(\\d+).(\\d+)", colorPattern = "([a-zA-Z0-9]{6})([-])([a-zA-Z0-9]{6})*";
 
-        bundle.putString("date", lineOneArray[0].trim());
-        bundle.putString("time", lineOneArray[1].trim());
+        Pattern p = Pattern.compile(datePattern);
+
+        Matcher m = p.matcher(lineOne);
+
+        if (m.find())
+            bundle.putString("date", m.group(0));
+
+        p = Pattern.compile(timePattern);
+
+        m = p.matcher(lineOne);
+
+        if (m.find())
+            bundle.putString("time", m.group(0));
+
+        p = Pattern.compile(dimensionPattern);
+
+        m = p.matcher(lineThree);
+
+        if (m.find()) {
+            String[] dimension = m.group(0).split("[a-zA-Z]");
+            bundle.putString("dimensionW", dimension[0]);
+            bundle.putString("dimensionL", dimension[1]);
+        }
+
+        p = Pattern.compile(colorPattern);
+
+        m = p.matcher(lineThree);
+
+        if (m.find()) {
+            String[] color = m.group(0).split("-");
+            bundle.putString("colorCodeOne", color[0]);
+            bundle.putString("colorCodeTwo", color[1]);
+        }
+
         bundle.putString("codedMessage", lineTwo);
-
-        lineThree = lineThree.substring(3, lineThree.length());
-
-        String[] lineThreeArray = lineThree.split("/", 2);
-
-        String dimension = lineThreeArray[0].trim(), colorCode = lineThreeArray[1].trim();
-
-        bundle.putString("dimensionW", dimension.substring(0, dimension.indexOf("w")).trim());
-        bundle.putString("dimensionL", dimension.substring(dimension.indexOf("w") + 1, dimension.length() - 1).trim());
-
-        String[] colorCodeArray = colorCode.split("-");
-
-        bundle.putString("colorCodeOne", colorCodeArray[0].trim());
-        bundle.putString("colorCodeTwo", colorCodeArray[1].trim());
 
         return bundle;
     }
