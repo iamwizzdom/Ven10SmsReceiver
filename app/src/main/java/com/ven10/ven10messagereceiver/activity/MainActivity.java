@@ -3,18 +3,13 @@ package com.ven10.ven10messagereceiver.activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ScrollView scrollView = findViewById(R.id.scroll_view);
-        LinearLayout dateTimeContainer = findViewById(R.id.date_time_container);
         TextView mDimension = findViewById(R.id.dimension);
         TextView mCodedMessage = findViewById(R.id.coded_message);
         TextView mDate = findViewById(R.id.date);

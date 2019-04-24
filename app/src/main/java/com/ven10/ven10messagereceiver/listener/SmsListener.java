@@ -1,7 +1,5 @@
 package com.ven10.ven10messagereceiver.listener;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +8,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.ven10.ven10messagereceiver.activity.MainActivity;
 
