@@ -99,9 +99,9 @@ public class SmsListener extends BroadcastReceiver {
 
         String[] strings = new String[size];
         while (m.find()) {
-            String txt = m.group(0);
-            if (txt.isEmpty()) continue;
-            strings[i++] = txt;
+            String line = m.group(0);
+            if (line.isEmpty()) continue;
+            strings[i++] = line;
         }
 
         return strings;
