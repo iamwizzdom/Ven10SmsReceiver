@@ -1,2 +1,2 @@
 # Ven10SmsReceiver
-The displays a coded sms sent by contact called Ven10
+The app displays a coded sms sent by contact called Ven10
