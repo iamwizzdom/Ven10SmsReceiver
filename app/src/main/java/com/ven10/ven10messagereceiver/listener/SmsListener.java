@@ -83,25 +83,7 @@ public class SmsListener extends BroadcastReceiver {
 
 
     private String[] splitMessage(String message) {
-
-        if (message == null) return new String[0];
-
-        // Create a Pattern object
-        Pattern p = Pattern.compile("^*(.*)");
-
-        // Now create matcher object.
-        Matcher m = p.matcher(message);
-
-        int size = message.split("\n").length, i = 0;
-
-        String[] strings = new String[size];
-        while (m.find()) {
-            String line = m.group(0);
-            if (line.isEmpty()) continue;
-            strings[i++] = line.trim();
-        }
-
-        return strings;
+        return message.split("\n");
     }
 
     private Bundle messageExtract(String[] message) {
