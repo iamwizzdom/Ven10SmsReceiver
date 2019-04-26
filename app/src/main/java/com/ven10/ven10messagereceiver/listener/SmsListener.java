@@ -58,11 +58,12 @@ public class SmsListener extends BroadcastReceiver {
 
                         if (Objects.equals(phone, msgFrom) && name.equalsIgnoreCase("Ven10")) {
 
-                            System.out.println(msgBody);
+                            //Returns a string array of each new line of the received sms
+                            String[] strings = splitMessage(msgBody);
 
-                            bundle = messageExtract(splitMessage(msgBody));
+                            bundle = messageExtract(strings);
 
-                            if (bundle.size() > 0) {
+                            if (bundle.size() >= 7) {
                                 intent = new Intent(context, MainActivity.class);
                                 intent.putExtra(MainActivity.MESSAGE_BUNDLE, bundle);
                                 context.getApplicationContext().startActivity(intent);
@@ -79,7 +80,6 @@ public class SmsListener extends BroadcastReceiver {
             }
         }
     }
-
 
 
     private String[] splitMessage(String message) {
@@ -126,7 +126,8 @@ public class SmsListener extends BroadcastReceiver {
 
         String datePattern = "[0-9]{1,2}(/|-)[0-9]{1,2}(/|-)[0-9]{4}",
                 timePattern = "[0-9]{1,2}(:|/)[0-9]{1,2}\\s[a-zA-Z]{2}",
-                dimensionPattern = "(\\d+).(\\d+)", colorPattern = "([a-zA-Z0-9]{6})([-])([a-zA-Z0-9]{6})*";
+                dimensionPattern = "(\\d+)([a-zA-Z]*)(\\d+)",
+                colorPattern = "([a-zA-Z0-9]{6})([^a-zA-Z0-9]*)([a-zA-Z0-9]{6})";
 
         Pattern p = Pattern.compile(datePattern);
 
@@ -147,9 +148,8 @@ public class SmsListener extends BroadcastReceiver {
         m = p.matcher(lineThree);
 
         if (m.find()) {
-            String[] dimension = m.group(0).split("[a-zA-Z]");
-            bundle.putString("dimensionW", dimension[0]);
-            bundle.putString("dimensionL", dimension[1]);
+            bundle.putString("dimensionW", m.group(1));
+            bundle.putString("dimensionL", m.group(3));
         }
 
         p = Pattern.compile(colorPattern);
@@ -157,9 +157,8 @@ public class SmsListener extends BroadcastReceiver {
         m = p.matcher(lineThree);
 
         if (m.find()) {
-            String[] color = m.group(0).split("-");
-            bundle.putString("colorCodeOne", color[0]);
-            bundle.putString("colorCodeTwo", color[1]);
+            bundle.putString("colorCodeOne", m.group(1));
+            bundle.putString("colorCodeTwo", m.group(3));
         }
 
         bundle.putString("codedMessage", lineTwo);
