@@ -83,7 +83,7 @@ public class SmsListener extends BroadcastReceiver {
 
 
     private String[] splitMessage(String message) {
-        return message.split("\n");
+        return message == null ? new String[0] : message.trim().split("\n");
     }
 
     private Bundle messageExtract(String[] message) {
@@ -100,16 +100,16 @@ public class SmsListener extends BroadcastReceiver {
         lineTwo = message[1];
         lineThree = message[2];
 
-        if (!lineOne.substring(0, 3).equals("DT:")) return bundle;
+        if (!lineOne.startsWith("DT:")) return bundle;
 
-        if (!lineThree.substring(0, 2).equals("SZ")) return bundle;
+        if (!lineThree.startsWith("SZ")) return bundle;
 
         lineOne = lineOne.substring(3, lineOne.length());
 
         String datePattern = "[0-9]{1,2}(/|-)[0-9]{1,2}(/|-)[0-9]{4}",
                 timePattern = "[0-9]{1,2}(:|/)[0-9]{1,2}\\s[a-zA-Z]{2}",
                 dimensionPattern = "(\\d+)([a-zA-Z]*)(\\d+)",
-                colorPattern = "([a-zA-Z0-9]{6})([^a-zA-Z0-9]*)([a-zA-Z0-9]{6})";
+                colorPattern = "([a-zA-Z0-9]{6})([^a-zA-Z0-9]*)([a-zA-Z0-9]{6})$";
 
         Pattern p = Pattern.compile(datePattern);
 
